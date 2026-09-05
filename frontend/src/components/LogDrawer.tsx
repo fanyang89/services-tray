@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Button, Drawer, Empty, Space, Switch } from 'antd';
+import { Button, Drawer, Empty, Switch } from 'antd';
 import { ClearOutlined, SyncOutlined } from '@ant-design/icons';
 import type { LogLine, ServiceInfo } from '../types';
 import { fetchLogs } from '../api';
@@ -66,16 +66,16 @@ export default function LogDrawer({
       width="min(920px, 92vw)"
       styles={{ body: { position: 'relative', padding: 12 } }}
       extra={
-        <Space>
+        <div className="log-toolbar">
           <span style={{ fontSize: 13 }}>跟随最新</span>
-          <Switch size="small" checked={follow} onChange={setFollow} />
+          <Switch aria-label="跟随最新日志" size="small" checked={follow} onChange={setFollow} />
           <Button size="small" icon={<SyncOutlined />} onClick={refresh}>
             刷新
           </Button>
           <Button size="small" icon={<ClearOutlined />} onClick={() => setLines([])}>
             清屏
           </Button>
-        </Space>
+        </div>
       }
     >
       <div className="log-box" ref={boxRef}>

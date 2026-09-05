@@ -5,7 +5,6 @@ import {
   Form,
   Input,
   Modal,
-  Space,
   Tooltip,
 } from 'antd';
 import {
@@ -144,22 +143,22 @@ export default function ServiceFormModal({
             {(fields, { add, remove }) => (
               <>
                 {fields.map((field) => (
-                  <Space key={field.key} align="baseline" style={{ display: 'flex', marginBottom: 4 }}>
+                  <div key={field.key} className="env-row">
                     <Form.Item
                       name={[field.name, 'key']}
                       rules={[{ required: true, message: '变量名不能为空' }]}
                       style={{ marginBottom: 0 }}
                     >
-                      <Input placeholder="KEY" style={{ width: 160 }} />
+                      <Input placeholder="KEY" aria-label="环境变量名" />
                     </Form.Item>
                     <Form.Item
                       name={[field.name, 'value']}
                       style={{ marginBottom: 0, flex: 1 }}
                     >
-                      <Input placeholder="value" />
+                      <Input placeholder="value" aria-label="环境变量值" />
                     </Form.Item>
-                    <MinusCircleOutlined onClick={() => remove(field.name)} />
-                  </Space>
+                    <Button type="text" aria-label="删除环境变量" icon={<MinusCircleOutlined />} onClick={() => remove(field.name)} />
+                  </div>
                 ))}
                 <Button type="dashed" block icon={<PlusOutlined />} onClick={() => add()}>
                   添加变量
@@ -168,14 +167,14 @@ export default function ServiceFormModal({
             )}
           </Form.List>
         </Form.Item>
-        <Space size="large">
+        <div className="form-options">
           <Form.Item name="autostart" valuePropName="checked" style={{ marginBottom: 0 }}>
             <Checkbox>随管理器自启</Checkbox>
           </Form.Item>
           <Form.Item name="auto_restart" valuePropName="checked" style={{ marginBottom: 0 }}>
             <Checkbox>异常自动重启</Checkbox>
           </Form.Item>
-        </Space>
+        </div>
       </Form>
     </Modal>
   );
