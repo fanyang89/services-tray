@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 # Dev loop for the backend: rebuild on Rust changes and restart the manager
-# gracefully (SIGINT), so managed services are stopped instead of orphaned.
+# gracefully (SIGTERM), so managed services are stopped instead of orphaned.
 #
-# Why not `cargo watch`: it kills the previous run with SIGKILL, which skips
-# the manager's graceful shutdown and leaves managed services orphaned (they
-# run in their own process groups by design). We stop the manager with
-# SIGTERM instead: stop all services, rebuild, restart.
+# `cargo watch` works too (it sends SIGTERM to the process group by default,
+# see task dev:backend:watch); this script additionally needs no install and
+# restarts the manager automatically if it crashes.
 #
 # Usage: scripts/dev-backend.sh [manager args...]
 #   e.g. scripts/dev-backend.sh --port 8765

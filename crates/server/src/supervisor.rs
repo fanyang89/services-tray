@@ -236,9 +236,9 @@ fn spawn_child(cfg: &ServiceConfig) -> std::io::Result<Child> {
         use std::os::unix::process::CommandExt;
         cmd.process_group(0);
     }
-    // Die with the manager even when it is SIGKILLed (e.g. a dev-loop
-    // restart), so services never outlive the manager and collide with the
-    // next instance's autostart.
+    // Die with the manager even when it is SIGKILLed (kill -9, OOM, a
+    // crashed supervisor), so services never outlive the manager and collide
+    // with the next instance's autostart.
     #[cfg(target_os = "linux")]
     {
         use std::os::unix::process::CommandExt;
