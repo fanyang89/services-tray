@@ -29,11 +29,6 @@ tasks:
 
   dev:backend:
     desc: Rebuild & gracefully restart the backend on Rust changes (:8730)
-    cmds:
-      - bash scripts/dev-backend.sh {{.CLI_ARGS}}
-
-  dev:backend:watch:
-    desc: Same loop via cargo watch (SIGTERM restart, needs cargo-watch)
     env:
       SM_SKIP_WEB_BUILD: "1"
     cmds:

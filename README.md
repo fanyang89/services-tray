@@ -17,17 +17,18 @@
 
 ## 开发
 
+需要 [cargo-watch](https://github.com/watchexec/cargo-watch)（`cargo install cargo-watch`，一次性）。
+
 ```sh
 task dev    # 一个终端同时跑前后端；也可分别 task dev:backend / task dev:frontend
 ```
 
 - 前端：Vite HMR，保存即热更新，开发入口 http://localhost:5173（`/api` 自动代理到 8730）
-- 后端：`scripts/dev-backend.sh` 轮询 `crates/**/*.rs` 变化 → 重编译 → SIGTERM 优雅重启管理器，
-  重启前会先停掉所有托管服务，不会产生孤儿进程或端口冲突；管理器崩溃时 1s 后自动拉起
-- 也可以用 `cargo watch`（默认即向进程组发 SIGTERM，同样走优雅停服）：
-  `SM_SKIP_WEB_BUILD=1 cargo watch -i frontend -x 'run -p services-manager-server'`
-  （`task dev:backend:watch` 已封装）；自带脚本的优势是无需安装、崩溃自动重启
-- dev 模式默认 `SM_SKIP_WEB_BUILD=1`，跳过内嵌 UI 构建
+- 后端：cargo-watch 监听 Rust 变化，SIGTERM 优雅重启——重启前管理器会先停掉所有托管服务，
+  不会产生孤儿进程或端口冲突（cargo-watch 自身退出时同样转发信号，收干净子进程）
+- `-i frontend` 避免前端改动触发后端重启（前端交给 Vite HMR）；
+  `SM_SKIP_WEB_BUILD=1` 跳过内嵌 UI 构建
+- 等价命令：`SM_SKIP_WEB_BUILD=1 cargo watch -i frontend -x 'run -p services-manager-server'`
 
 ## 快速开始
 
