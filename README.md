@@ -17,24 +17,30 @@
 
 ## 快速开始
 
-需要：Rust (stable)、Node.js ≥ 18、pnpm。
+需要：Rust (stable)、Node.js ≥ 18、pnpm。cargo 的 build script 会在前端输入变化时
+自动执行 `pnpm install` + `pnpm build`，所以直接：
 
 ```sh
-# 安装前端依赖并构建 SPA
-pnpm --dir frontend install
-pnpm --dir frontend build
-
-# 构建并运行（默认 http://127.0.0.1:8730）
-cargo run --release -p services-manager-server
+cargo run --release -p services-manager-server   # http://127.0.0.1:8730
 ```
 
 或使用 [Task](https://taskfile.dev)：
 
 ```sh
-task build      # 前端 + 后端一起构建
-task dev:backend   # 只跑后端 (8730)
-task dev:frontend  # 只跑前端 dev server (5173，/api 已代理)
+task build           # cargo build --release（UI 由 build.rs 自动构建）
+task dev:backend     # 只跑后端 (8730)
+task dev:frontend    # 只跑前端 dev server (5173，/api 已代理)
 ```
+
+### Web UI 自动构建（build.rs）
+
+`crates/server/build.rs` 对前端所有输入文件（源码、配置、lockfile）做内容哈希，
+与 `frontend/dist/.web-build-stamp` 不一致时自动重建 UI，一致则跳过（纯 `touch` 不会
+触发重建）。`frontend/dist` 被删除后也会自动重建。
+
+- `SM_SKIP_WEB_BUILD=1`：跳过 UI 构建（dist 缺失时生成占位文件保证可编译）
+- 未安装 pnpm 但存在旧 dist：复用旧产物并给出 warning，便于无 Node 环境下从源码构建
+- 多个 cargo 进程并发构建时通过 `frontend/.web-build.lock` 串行化
 
 ## 命令行参数
 

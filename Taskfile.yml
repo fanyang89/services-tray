@@ -19,8 +19,7 @@ tasks:
       - pnpm build
 
   build:
-    desc: Build the release binary (embeds the SPA)
-    deps: [fe:build]
+    desc: Build the release binary (build.rs rebuilds the web UI when stale)
     cmds:
       - cargo build --release
 
