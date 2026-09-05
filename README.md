@@ -17,7 +17,7 @@
 
 ## 开发
 
-需要 [cargo-watch](https://github.com/watchexec/cargo-watch)（`cargo install cargo-watch`，一次性）。
+需要 [cargo-watch](https://github.com/watchexec/cargo-watch)：`task tools:install`（即 `cargo install cargo-watch`，一次性，已安装则秒过）。
 
 ```sh
 task dev    # 一个终端同时跑前后端；也可分别 task dev:backend / task dev:frontend

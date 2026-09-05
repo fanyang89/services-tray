@@ -1,6 +1,11 @@
 version: "3"
 
 tasks:
+  tools:install:
+    desc: Install dev tools (cargo-watch); safe to re-run
+    cmds:
+      - cargo install cargo-watch
+
   fe:install:
     desc: Install frontend dependencies
     dir: frontend
@@ -31,6 +36,9 @@ tasks:
     desc: Rebuild & gracefully restart the backend on Rust changes (:8730)
     env:
       SM_SKIP_WEB_BUILD: "1"
+    preconditions:
+      - sh: command -v cargo-watch >/dev/null
+        msg: "cargo-watch not found — run `task tools:install` first"
     cmds:
       - cargo watch --ignore frontend -x "run -p services-manager-server {{.CLI_ARGS}}"
 
