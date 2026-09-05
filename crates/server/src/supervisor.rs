@@ -236,6 +236,21 @@ fn spawn_child(cfg: &ServiceConfig) -> std::io::Result<Child> {
         use std::os::unix::process::CommandExt;
         cmd.process_group(0);
     }
+    // Die with the manager even when it is SIGKILLed (e.g. a dev-loop
+    // restart), so services never outlive the manager and collide with the
+    // next instance's autostart.
+    #[cfg(target_os = "linux")]
+    {
+        use std::os::unix::process::CommandExt;
+        unsafe {
+            cmd.pre_exec(|| {
+                // Best effort: no race check against the parent dying between
+                // fork and prctl — the graceful SIGTERM path covers the rest.
+                libc::prctl(libc::PR_SET_PDEATHSIG, libc::SIGKILL as libc::c_ulong);
+                Ok(())
+            });
+        }
+    }
 
     let mut cmd = Command::from(cmd);
     // Safety net: never leak a process if the watcher task is dropped.
