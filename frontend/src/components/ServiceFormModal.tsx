@@ -6,9 +6,13 @@ import {
   Input,
   Modal,
   Space,
-  Typography,
+  Tooltip,
 } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  MinusCircleOutlined,
+  PlusOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
 import type { ServiceInfo } from '../types';
 import { shellSplit } from '../utils';
 
@@ -119,7 +123,17 @@ export default function ServiceFormModal({
         >
           <Input placeholder="dufs" />
         </Form.Item>
-        <Form.Item name="args" label="参数">
+        <Form.Item
+          name="args"
+          label={
+            <span>
+              参数&nbsp;
+              <Tooltip title='支持引号，例如 -p 5001 --path "/my dir"'>
+                <QuestionCircleOutlined style={{ color: 'rgba(0,0,0,0.45)' }} />
+              </Tooltip>
+            </span>
+          }
+        >
           <Input placeholder="-p 5001 --allow-upload" />
         </Form.Item>
         <Form.Item name="cwd" label="工作目录">
@@ -162,9 +176,6 @@ export default function ServiceFormModal({
             <Checkbox>异常自动重启</Checkbox>
           </Form.Item>
         </Space>
-        <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-          参数支持引号，例如 -p 5001 --path "/my dir"
-        </Typography.Text>
       </Form>
     </Modal>
   );
