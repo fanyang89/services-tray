@@ -23,13 +23,17 @@ tasks:
     cmds:
       - cargo build --release
 
+  dev:
+    desc: Full dev loop — Vite HMR (:5173) + backend rebuild/restart (:8730)
+    deps: [dev:frontend, dev:backend]
+
   dev:backend:
-    desc: Run the backend on http://127.0.0.1:8730
+    desc: Rebuild & gracefully restart the backend on Rust changes (:8730)
     cmds:
-      - cargo run -p services-manager-server
+      - bash scripts/dev-backend.sh {{.CLI_ARGS}}
 
   dev:frontend:
-    desc: Run the Vite dev server on http://localhost:5173 (proxies /api)
+    desc: Vite dev server with HMR (:5173, proxies /api to :8730)
     dir: frontend
     cmds:
       - pnpm dev

@@ -15,6 +15,19 @@
 
 > 安全提示：服务未做鉴权，默认只监听 `127.0.0.1`。请勿直接暴露到公网。
 
+## 开发
+
+```sh
+task dev    # 一个终端同时跑前后端；也可分别 task dev:backend / task dev:frontend
+```
+
+- 前端：Vite HMR，保存即热更新，开发入口 http://localhost:5173（`/api` 自动代理到 8730）
+- 后端：`scripts/dev-backend.sh` 轮询 `crates/**/*.rs` 变化 → 重编译 → SIGTERM 优雅重启管理器，
+  重启前会先停掉所有托管服务，不会产生孤儿进程或端口冲突；管理器崩溃时 1s 后自动拉起
+- dev 模式默认 `SM_SKIP_WEB_BUILD=1`，跳过内嵌 UI 构建
+- 为什么不用 `cargo watch`：它用 SIGKILL 结束旧进程，会跳过优雅停服把服务进程孤儿化
+  （Linux 下有 PDEATHSIG 兜底，macOS 等平台没有）
+
 ## 快速开始
 
 需要：Rust (stable)、Node.js ≥ 18、pnpm。cargo 的 build script 会在前端输入变化时
