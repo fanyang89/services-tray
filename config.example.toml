@@ -1,0 +1,25 @@
+# Example configuration for services-manager.
+#
+# NOTE: the web UI manages this file automatically (add/edit/delete are
+# persisted here). This file only documents the format.
+
+[[services]]
+id = "00000000-0000-0000-0000-000000000001"
+name = "dufs"
+command = "dufs"
+args = ["-p", "5001", "/data"]
+cwd = ""
+autostart = false
+auto_restart = true
+
+[services.env]
+# RUST_LOG = "info"
+
+[[services]]
+id = "00000000-0000-0000-0000-000000000002"
+name = "example-worker"
+command = "python3"
+args = ["-m", "http.server", "5002", "--directory", "/tmp"]
+cwd = ""
+autostart = false
+auto_restart = false

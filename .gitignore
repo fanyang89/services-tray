@@ -1,0 +1,6 @@
+/target
+node_modules/
+frontend/dist/
+*.local
+.DS_Store
+.pnpm-store/

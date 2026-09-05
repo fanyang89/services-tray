@@ -1,0 +1,36 @@
+version: "3"
+
+tasks:
+  fe:install:
+    desc: Install frontend dependencies
+    dir: frontend
+    cmds:
+      - pnpm install
+
+  fe:build:
+    desc: Build the React SPA into frontend/dist
+    dir: frontend
+    sources:
+      - src/**/*
+      - package.json
+    generates:
+      - dist/**/*
+    cmds:
+      - pnpm build
+
+  build:
+    desc: Build the release binary (embeds the SPA)
+    deps: [fe:build]
+    cmds:
+      - cargo build --release
+
+  dev:backend:
+    desc: Run the backend on http://127.0.0.1:8730
+    cmds:
+      - cargo run -p services-manager-server
+
+  dev:frontend:
+    desc: Run the Vite dev server on http://localhost:5173 (proxies /api)
+    dir: frontend
+    cmds:
+      - pnpm dev
