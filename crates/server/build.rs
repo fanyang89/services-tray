@@ -98,6 +98,7 @@ fn watched(frontend: &Path) -> Vec<PathBuf> {
     for name in [
         "package.json",
         "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
         "vite.config.ts",
         "tsconfig.json",
         "index.html",

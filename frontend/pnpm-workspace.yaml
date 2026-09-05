@@ -1,0 +1,3 @@
+# Approve only the pinned Vite build dependency; other install scripts stay blocked.
+allowBuilds:
+  esbuild@0.25.12: true
